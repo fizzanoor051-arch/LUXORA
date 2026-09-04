@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const products = [
@@ -55,7 +55,7 @@ const products = [
   },
 ];
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
 
   const initialQuery = searchParams.get("q") || "";
@@ -67,8 +67,12 @@ export default function SearchPage() {
 
     return products.filter(
       (product) =>
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.category.toLowerCase().includes(query.toLowerCase())
+        product.name
+          .toLowerCase()
+          .includes(query.toLowerCase()) ||
+        product.category
+          .toLowerCase()
+          .includes(query.toLowerCase())
     );
   }, [query]);
 
@@ -94,7 +98,13 @@ export default function SearchPage() {
               autoFocus
             />
 
-            <button className="px-5 text-xl">⌕</button>
+            <button
+              type="button"
+              className="px-5 text-xl"
+              aria-label="Search"
+            >
+              ⌕
+            </button>
           </div>
         </div>
       </section>
@@ -141,13 +151,20 @@ export default function SearchPage() {
         ) : (
           <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {results.map((product) => (
-              <article key={product.id} className="group">
+              <article
+                key={product.id}
+                className="group"
+              >
                 <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-[#eee9e3]">
                   <span className="font-serif text-7xl text-[#9b7b58]/40 transition duration-500 group-hover:scale-110">
                     L
                   </span>
 
-                  <button className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white text-lg shadow-sm">
+                  <button
+                    type="button"
+                    aria-label={`Add ${product.name} to wishlist`}
+                    className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white text-lg shadow-sm"
+                  >
                     ♡
                   </button>
 
@@ -175,5 +192,23 @@ export default function SearchPage() {
         )}
       </section>
     </main>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#faf9f7] px-6 py-20">
+          <div className="mx-auto max-w-7xl">
+            <p className="text-sm text-gray-400">
+              Loading search...
+            </p>
+          </div>
+        </main>
+      }
+    >
+      <SearchContent />
+    </Suspense>
   );
 }
