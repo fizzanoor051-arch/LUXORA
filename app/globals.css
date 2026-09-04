@@ -1,26 +1,465 @@
 @import "tailwindcss";
 
+/* =========================================================
+   LUXORA — LUXURY VISUAL SYSTEM
+   Ivory + Blush + Lavender + Champagne
+   ========================================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --luxora-ink: #21152b;
+  --luxora-purple: #8d5c91;
+  --luxora-lavender: #cbb7d4;
+  --luxora-blush: #ead0d8;
+  --luxora-champagne: #c9a56a;
+  --luxora-cream: #fbf7f3;
+  --luxora-white: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* =========================================================
+   BASE
+   ========================================================= */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 10% 8%,
+      rgba(234, 208, 216, 0.72) 0,
+      rgba(234, 208, 216, 0.35) 16%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(203, 183, 212, 0.65) 0,
+      rgba(203, 183, 212, 0.28) 18%,
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(255, 255, 255, 0.9) 0,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 15% 86%,
+      rgba(225, 204, 181, 0.38) 0,
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #faf5f1 0%,
+      #f8f1f5 38%,
+      #f6f1f8 68%,
+      #faf6f1 100%
+    );
+
+  color: var(--luxora-ink);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   LUXORA BACKGROUND LAYER
+   ========================================================= */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 18% 30%,
+      rgba(218, 176, 191, 0.28),
+      transparent 23%
+    ),
+    radial-gradient(
+      circle at 82% 25%,
+      rgba(174, 144, 190, 0.25),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 70% 78%,
+      rgba(220, 192, 154, 0.18),
+      transparent 25%
+    );
+
+  filter: blur(45px);
+  animation: luxoraBackgroundMove 18s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   SUBTLE LUXURY LIGHT
+   ========================================================= */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.38) 45%,
+      transparent 70%
+    );
+
+  opacity: 0.7;
+}
+
+/* =========================================================
+   BACKGROUND ANIMATION
+   ========================================================= */
+
+@keyframes luxoraBackgroundMove {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(2%, 2%, 0) scale(1.04);
+  }
+
+  100% {
+    transform: translate3d(-1%, 3%, 0) scale(1.02);
+  }
+}
+
+/* =========================================================
+   LUXORA PAGE WRAPPER
+   ========================================================= */
+
+.luxora-page {
+  position: relative;
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.05) 30%,
+      rgba(255, 255, 255, 0.12) 100%
+    );
+}
+
+/* =========================================================
+   LUXURY HERO BACKGROUND
+   ========================================================= */
+
+.luxora-hero {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(235, 202, 213, 0.82),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(198, 177, 212, 0.78),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 55% 80%,
+      rgba(226, 204, 169, 0.28),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #fbf5f1 0%,
+      #f5edf5 48%,
+      #f7f2ed 100%
+    );
+}
+
+/* Decorative hero glow */
+
+.luxora-hero::before {
+  content: "";
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  top: -170px;
+  left: -120px;
+
+  border-radius: 9999px;
+
+  background: rgba(255, 255, 255, 0.48);
+
+  filter: blur(8px);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   SOFT SECTION
+   ========================================================= */
+
+.luxora-section {
+  position: relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.45),
+      rgba(250, 244, 247, 0.52)
+    );
+}
+
+/* =========================================================
+   LUXURY SECTION VARIATIONS
+   ========================================================= */
+
+.luxora-section-blush {
+  background:
+    radial-gradient(
+      circle at 10% 50%,
+      rgba(234, 208, 216, 0.58),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 248, 245, 0.72),
+      rgba(247, 239, 247, 0.76)
+    );
+}
+
+.luxora-section-lavender {
+  background:
+    radial-gradient(
+      circle at 90% 35%,
+      rgba(203, 183, 212, 0.58),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(249, 244, 248, 0.82),
+      rgba(244, 239, 247, 0.78)
+    );
+}
+
+.luxora-section-champagne {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(225, 204, 169, 0.26),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(252, 248, 241, 0.82),
+      rgba(248, 242, 239, 0.75)
+    );
+}
+
+/* =========================================================
+   GLASS EFFECT
+   ========================================================= */
+
+.luxora-glass {
+  background: rgba(255, 255, 255, 0.58);
+
+  border: 1px solid rgba(255, 255, 255, 0.68);
+
+  box-shadow:
+    0 20px 70px rgba(53, 32, 60, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* =========================================================
+   LUXURY CARD
+   ========================================================= */
+
+.luxora-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(250, 244, 248, 0.82)
+    );
+
+  border: 1px solid rgba(33, 21, 43, 0.06);
+
+  box-shadow:
+    0 15px 50px rgba(43, 25, 48, 0.06);
+
+  transition:
+    transform 0.45s ease,
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+}
+
+.luxora-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(141, 92, 145, 0.18);
+
+  box-shadow:
+    0 25px 70px rgba(53, 32, 60, 0.12);
+}
+
+/* =========================================================
+   SOFT GLOW
+   ========================================================= */
+
+.luxora-soft-glow {
+  position: relative;
+}
+
+.luxora-soft-glow::before {
+  content: "";
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 9999px;
+
+  background: rgba(203, 183, 212, 0.24);
+
+  filter: blur(80px);
+
+  pointer-events: none;
+
+  z-index: -1;
+}
+
+/* =========================================================
+   GOLD LINE
+   ========================================================= */
+
+.luxora-gold-line {
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(201, 165, 106, 0.65),
+      transparent
+    );
+}
+
+/* =========================================================
+   LUXURY TEXT
+   ========================================================= */
+
+.luxora-eyebrow {
+  color: var(--luxora-purple);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.luxora-heading {
+  color: var(--luxora-ink);
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  letter-spacing: -0.025em;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f6f0f4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #c8aecb,
+    #8d5c91
+  );
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #765079;
+}
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+  background: rgba(141, 92, 145, 0.2);
+  color: #21152b;
+}
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+img {
+  max-width: 100%;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  body::before {
+    filter: blur(55px);
+    opacity: 0.8;
+  }
+
+  .luxora-hero::before {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body::before {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

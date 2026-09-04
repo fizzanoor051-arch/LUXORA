@@ -1,0 +1,352 @@
+@import "tailwindcss";
+
+/* =========================================================
+   LUXORA — Global Styles
+   ========================================================= */
+
+:root {
+  --luxora-dark: #21152b;
+  --luxora-purple: #8d5c91;
+  --luxora-lavender: #d9bfdc;
+  --luxora-cream: #fbf8f5;
+  --luxora-soft: #f4eef5;
+  --luxora-gold: #c49b63;
+  --luxora-white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--luxora-cream);
+  color: var(--luxora-dark);
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =========================================================
+   Selection
+   ========================================================= */
+
+::selection {
+  background: var(--luxora-lavender);
+  color: var(--luxora-dark);
+}
+
+/* =========================================================
+   Scrollbar
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3eeea;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cdb8cf;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--luxora-purple);
+}
+
+/* =========================================================
+   Links
+   ========================================================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+button {
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--luxora-purple);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   Inputs
+   ========================================================= */
+
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(33, 21, 43, 0.35);
+}
+
+/* =========================================================
+   Luxury Utility Classes
+   ========================================================= */
+
+.luxora-glass {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(33, 21, 43, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.luxora-card {
+  background: #ffffff;
+  border: 1px solid rgba(33, 21, 43, 0.07);
+  box-shadow: 0 15px 50px rgba(33, 21, 43, 0.06);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.luxora-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(141, 92, 145, 0.2);
+  box-shadow: 0 25px 70px rgba(33, 21, 43, 0.1);
+}
+
+/* =========================================================
+   Luxury Background
+   ========================================================= */
+
+.luxora-bg {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 10% 15%,
+      rgba(217, 191, 220, 0.28),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(196, 155, 99, 0.12),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(141, 92, 145, 0.1),
+      transparent 30%
+    ),
+    var(--luxora-cream);
+}
+
+/* =========================================================
+   Decorative Glow
+   ========================================================= */
+
+.luxora-glow {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 999px;
+  background: rgba(217, 191, 220, 0.3);
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.luxora-glow-gold {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  background: rgba(196, 155, 99, 0.13);
+  filter: blur(65px);
+  pointer-events: none;
+}
+
+/* =========================================================
+   Luxury Text
+   ========================================================= */
+
+.luxora-gradient-text {
+  background: linear-gradient(
+    120deg,
+    #21152b,
+    #8d5c91,
+    #c49b63
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =========================================================
+   Smooth Image
+   ========================================================= */
+
+.luxora-image {
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s ease;
+}
+
+.luxora-image:hover {
+  transform: scale(1.04);
+}
+
+/* =========================================================
+   Fade Animation
+   ========================================================= */
+
+@keyframes luxora-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.luxora-fade-up {
+  animation: luxora-fade-up 0.7s ease-out both;
+}
+
+/* =========================================================
+   Floating Animation
+   ========================================================= */
+
+@keyframes luxora-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.luxora-float {
+  animation: luxora-float 4s ease-in-out infinite;
+}
+
+/* =========================================================
+   Shimmer
+   ========================================================= */
+
+@keyframes luxora-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.luxora-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(141, 92, 145, 0.1),
+    rgba(255, 255, 255, 0.75),
+    rgba(141, 92, 145, 0.1)
+  );
+  background-size: 200% auto;
+  animation: luxora-shimmer 2.5s linear infinite;
+}
+
+/* =========================================================
+   Line Reveal
+   ========================================================= */
+
+.luxora-line {
+  width: 70px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--luxora-gold),
+    transparent
+  );
+}
+
+/* =========================================================
+   Page Container
+   ========================================================= */
+
+.luxora-container {
+  width: min(100% - 40px, 1280px);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .luxora-container {
+    width: min(100% - 80px, 1280px);
+  }
+}
+
+/* =========================================================
+   Mobile
+   ========================================================= */
+
+@media (max-width: 640px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .luxora-container {
+    width: min(100% - 28px, 1280px);
+  }
+
+  .luxora-glow {
+    width: 180px;
+    height: 180px;
+    filter: blur(55px);
+  }
+
+  .luxora-glow-gold {
+    width: 160px;
+    height: 160px;
+    filter: blur(50px);
+  }
+}
+
+/* =========================================================
+   Reduced Motion
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
