@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -12,6 +13,8 @@ import { ThemeProvider } from "../src/context/ThemeContext";
 import { AIProvider } from "../src/context/AIContext";
 
 import AIChatbot from "../src/components/ai/AIChatbot";
+
+import ProjectVisitTracker from "../src/components/analyticsa/ProjectVisitTracker";
 
 export const metadata: Metadata = {
   title: {
@@ -58,6 +61,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen w-full overflow-x-hidden bg-white text-gray-900 antialiased">
+        <ProjectVisitTracker />
+
         <ThemeProvider>
           <AuthProvider>
             <CartProvider>
