@@ -61,7 +61,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen w-full overflow-x-hidden bg-white text-gray-900 antialiased">
-        <ProjectVisitTracker />
+        <ProjectVisitTracker
+          projectName="Luxora Store"
+          projectSlug="luxora"
+        />
 
         <ThemeProvider>
           <AuthProvider>
