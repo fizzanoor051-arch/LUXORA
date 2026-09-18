@@ -52,7 +52,8 @@ function getDevice(): string {
 }
 
 function getBrowser(): string {
-  const userAgent = navigator.userAgent;
+  const userAgent =
+    navigator.userAgent;
 
   if (/Edg\//i.test(userAgent)) {
     return "Microsoft Edge";
@@ -78,7 +79,8 @@ function getBrowser(): string {
 }
 
 function getOS(): string {
-  const userAgent = navigator.userAgent;
+  const userAgent =
+    navigator.userAgent;
 
   if (/Windows NT/i.test(userAgent)) {
     return "Windows";
@@ -88,7 +90,11 @@ function getOS(): string {
     return "Android";
   }
 
-  if (/iPhone|iPad|iPod/i.test(userAgent)) {
+  if (
+    /iPhone|iPad|iPod/i.test(
+      userAgent
+    )
+  ) {
     return "iOS";
   }
 
@@ -103,86 +109,95 @@ function getOS(): string {
   return "Unknown";
 }
 
-function sendProjectVisit(
+async function sendProjectVisit(
   visitorId: string,
   projectName: string,
-  projectSlug: string,
-  location?: {
-    latitude: number;
-    longitude: number;
-    accuracy: number;
-  }
-) {
-  const payload = {
-    visitorId,
+  projectSlug: string
+): Promise<boolean> {
+  try {
+    const payload = {
+      visitorId,
 
-    projectName,
+      projectName,
 
-    projectSlug,
+      projectSlug,
 
-    projectUrl:
-      window.location.origin,
+      projectUrl:
+        window.location.origin,
 
-    referrer:
-      document.referrer || "",
+      referrer:
+        document.referrer || "",
 
-    path:
-      window.location.pathname,
+      path:
+        window.location.pathname,
 
-    device:
-      getDevice(),
+      device:
+        getDevice(),
 
-    browser:
-      getBrowser(),
+      browser:
+        getBrowser(),
 
-    os:
-      getOS(),
+      os:
+        getOS(),
 
-    userAgent:
-      navigator.userAgent,
+      userAgent:
+        navigator.userAgent,
+    };
 
-    ...(location
-      ? {
-          latitude:
-            String(
-              location.latitude
-            ),
+    const response =
+      await fetch(
+        ANALYTICS_URL,
+        {
+          method: "POST",
 
-          longitude:
-            String(
-              location.longitude
-            ),
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-          locationAccuracy:
-            String(
-              location.accuracy
-            ),
+          body: JSON.stringify(
+            payload
+          ),
+
+          keepalive: true,
         }
-      : {}),
-  };
+      );
 
-  fetch(
-    ANALYTICS_URL,
-    {
-      method: "POST",
+    if (!response.ok) {
+      console.error(
+        "Luxora analytics API error:",
+        response.status
+      );
 
-      headers: {
-        "Content-Type":
-          "application/json",
-      },
-
-      body: JSON.stringify(
-        payload
-      ),
-
-      keepalive: true,
+      return false;
     }
-  ).catch((error) => {
+
+    const result =
+      await response.json();
+
+    if (!result?.success) {
+      console.error(
+        "Luxora analytics rejected visit:",
+        result
+      );
+
+      return false;
+    }
+
+    console.log(
+      "Luxora project visit tracked:",
+      result
+    );
+
+    return true;
+  } catch (error) {
     console.error(
       "Luxora project analytics failed:",
       error
     );
-  });
+
+    return false;
+  }
 }
 
 export default function ProjectVisitTracker({
@@ -190,105 +205,76 @@ export default function ProjectVisitTracker({
   projectSlug,
 }: ProjectVisitTrackerProps) {
   useEffect(() => {
-    try {
-      const visitorId =
-        getVisitorId();
+    let cancelled = false;
 
-      if (!visitorId) {
-        return;
-      }
+    async function trackVisit() {
+      try {
+        const visitorId =
+          getVisitorId();
 
-      /*
-       * One visit per browser session
-       * for this project.
-       *
-       * Different projects have separate
-       * session keys.
-       */
-      const sessionKey =
-        `${SESSION_KEY}_${projectSlug}`;
+        if (!visitorId) {
+          return;
+        }
 
-      const alreadyTracked =
-        sessionStorage.getItem(
-          sessionKey
-        );
+        /*
+         * Every project gets its own
+         * session tracking key.
+         */
+        const sessionKey =
+          `${SESSION_KEY}_${projectSlug}`;
 
-      if (alreadyTracked) {
-        return;
-      }
+        const alreadyTracked =
+          sessionStorage.getItem(
+            sessionKey
+          );
 
-      sessionStorage.setItem(
-        sessionKey,
-        "true"
-      );
+        if (alreadyTracked) {
+          return;
+        }
 
-      /*
-       * Try to get the visitor's GPS
-       * location first.
-       *
-       * If permission is denied or unavailable,
-       * the visit is still tracked.
-       */
-      if (
-        "geolocation" in
-        navigator
-      ) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            sendProjectVisit(
-              visitorId,
-              projectName,
-              projectSlug,
-              {
-                latitude:
-                  position.coords
-                    .latitude,
+        /*
+         * IMPORTANT:
+         *
+         * Do NOT wait for GPS.
+         *
+         * The visit is sent immediately.
+         * Country/city can be obtained from
+         * the server/Vercel geo headers.
+         */
+        const success =
+          await sendProjectVisit(
+            visitorId,
+            projectName,
+            projectSlug
+          );
 
-                longitude:
-                  position.coords
-                    .longitude,
-
-                accuracy:
-                  position.coords
-                    .accuracy,
-              }
-            );
-          },
-
-          () => {
-            /*
-             * GPS unavailable:
-             * still record the visit.
-             */
-            sendProjectVisit(
-              visitorId,
-              projectName,
-              projectSlug
-            );
-          },
-
-          {
-            enableHighAccuracy:
-              true,
-
-            timeout: 10000,
-
-            maximumAge: 0,
-          }
-        );
-      } else {
-        sendProjectVisit(
-          visitorId,
-          projectName,
-          projectSlug
+        if (
+          success &&
+          !cancelled
+        ) {
+          /*
+           * Only mark the session as
+           * tracked AFTER the API confirms
+           * successful tracking.
+           */
+          sessionStorage.setItem(
+            sessionKey,
+            "true"
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Luxora project tracker error:",
+          error
         );
       }
-    } catch (error) {
-      console.error(
-        "Luxora project tracker error:",
-        error
-      );
     }
+
+    trackVisit();
+
+    return () => {
+      cancelled = true;
+    };
   }, [
     projectName,
     projectSlug,
