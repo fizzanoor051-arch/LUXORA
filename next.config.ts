@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+
   compress: true,
   images: {
     formats: ["image/avif", "image/webp"],
@@ -9,6 +10,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
   },
+
 };
 
 export default nextConfig;
